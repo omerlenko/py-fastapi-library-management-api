@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 import schemas
 import crud
-from db.database import get_db
+from database import get_db
 
 app = FastAPI()
 DbDep = Annotated[Session, Depends(get_db)]

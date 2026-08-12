@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 import schemas
-from db import models
+import models
 
 
 def get_authors(db: Session, skip: int = 0, limit: int = 10) -> list[models.Author]:

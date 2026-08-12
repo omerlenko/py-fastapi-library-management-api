@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import date
 
-from db.database import Base
+from database import Base
 from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -23,7 +23,7 @@ class Book(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(255))
     summary: Mapped[str] = mapped_column(String(511))
-    publication_date: Mapped[datetime] = mapped_column()
+    publication_date: Mapped[date] = mapped_column()
     author_id: Mapped[int] = mapped_column(ForeignKey("authors.id", ondelete="CASCADE"))
 
     author: Mapped["Author"] = relationship(back_populates="books")

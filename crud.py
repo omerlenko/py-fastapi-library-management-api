@@ -5,11 +5,15 @@ import schemas
 from db import models
 
 
-def get_authors(db: Session) -> list[models.Author]:
-    return list(db.scalars(select(models.Author)).all())
+def get_authors(db: Session, skip: int = 0, limit: int = 10) -> list[models.Author]:
+    stmt = select(models.Author).order_by(models.Author.id).offset(skip).limit(limit)
+    return list(db.scalars(stmt).all())
 
 def get_author(db: Session, author_id: int) -> models.Author | None:
     return db.get(models.Author, author_id)
+
+def get_author_by_name(db: Session, name: str) -> models.Author | None:
+    return db.scalar(select(models.Author).where(models.Author.name == name))
 
 def create_author(db: Session, data: schemas.AuthorCreate) -> models.Author:
     author = models.Author(**data.model_dump())
@@ -18,8 +22,12 @@ def create_author(db: Session, data: schemas.AuthorCreate) -> models.Author:
     db.refresh(author)
     return author
 
-def get_books(db: Session) -> list[models.Book]:
-    return list(db.scalars(select(models.Book)).all())
+def get_books(db: Session, author_id: int | None = None, skip: int = 0, limit: int = 10) -> list[models.Book]:
+    stmt = select(models.Book).order_by(models.Book.id)
+    if author_id is not None:
+        stmt = stmt.where(models.Book.author_id == author_id)
+    stmt = stmt.offset(skip).limit(limit)
+    return list(db.scalars(stmt).all())
 
 def get_book(db: Session, book_id: int) -> models.Book | None:
     return db.get(models.Book, book_id)

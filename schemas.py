@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Annotated
@@ -21,7 +21,7 @@ class AuthorRead(AuthorBase):
 class BookBase(BaseModel):
     title: Annotated[str, Field(max_length=255)]
     summary: Annotated[str, Field(max_length=511)]
-    publication_date: datetime
+    publication_date: date
 
 
 class BookCreate(BookBase):
